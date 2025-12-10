@@ -7,11 +7,9 @@ namespace SydneyCoffee
     {
         static void Main(string[] args)
         {
-            // Let user decide how many customers to enter
             Console.Write("Enter number of customers: ");
             int n = Convert.ToInt32(Console.ReadLine());
 
-            // Replaced arrays with dynamic Lists
             List<string> name = new List<string>();
             List<int> quantity = new List<int>();
             List<string> reseller = new List<string>();
@@ -23,17 +21,14 @@ namespace SydneyCoffee
             double max = -1;
             string maxName = "";
 
-            // Welcome message
             Console.WriteLine("\n\t\t*** Welcome to Sydney Coffee Program ***\n");
 
-            // Loop to get inputs
             for (int i = 0; i < n; i++)
             {
                 Console.Write("Enter customer name: ");
                 name.Add(Console.ReadLine());
 
                 int q = 0;
-                // Quantity validation
                 do
                 {
                     Console.Write("Enter number of coffee bean bags (1–200): ");
@@ -48,7 +43,6 @@ namespace SydneyCoffee
 
                 quantity.Add(q);
 
-                // price calculation
                 if (q <= 5)
                     price = 36 * q;
                 else if (q <= 15)
@@ -56,14 +50,12 @@ namespace SydneyCoffee
                 else
                     price = 32.7 * q;
 
-                // Reseller input validation
                 string tempReseller;
                 do
                 {
-                    Console.Write("Are you a reseller? (y/n): ");   // CHANGE 1
+                    Console.Write("Are you a reseller? (y/n): ");
                     tempReseller = Console.ReadLine().ToLower();
 
-                    // CHANGE 1 → convert y/n to yes/no
                     if (tempReseller == "y") tempReseller = "yes";
                     if (tempReseller == "n") tempReseller = "no";
 
@@ -76,11 +68,11 @@ namespace SydneyCoffee
 
                 reseller.Add(tempReseller);
 
-                // Apply discount + round
                 double finalCharge;
 
+                // CHANGE 1: reseller discount 20% → 25%
                 if (tempReseller == "yes")
-                    finalCharge = Math.Round(price * 0.8, 2); // 20% discount
+                    finalCharge = Math.Round(price * 0.75, 2);
                 else
                     finalCharge = Math.Round(price, 2);
 
@@ -89,21 +81,23 @@ namespace SydneyCoffee
                 Console.WriteLine($"Total charge for {name[i]} is ${finalCharge}");
                 Console.WriteLine("-----------------------------------------------------");
 
-                // Track min/max
                 if (finalCharge < min)
                 {
                     min = finalCharge;
-                    minName = name[i];
+
+                    // CHANGE 2: include number of bags
+                    minName = name[i] + " (" + quantity[i] + " bags)";
                 }
 
                 if (finalCharge > max)
                 {
                     max = finalCharge;
-                    maxName = name[i];
+
+                    // CHANGE 2: include number of bags
+                    maxName = name[i] + " (" + quantity[i] + " bags)";
                 }
             }
 
-            // Summary Output
             Console.WriteLine("\n============= SUMMARY REPORT =============");
 
             double sum = 0;
@@ -113,7 +107,7 @@ namespace SydneyCoffee
             }
 
             double average = sum / n;
-            Console.WriteLine($"Average order charge: ${average:F2}");   // CHANGE 2
+            Console.WriteLine($"Average order charge: ${average:F2}");
 
             Console.WriteLine($"Lowest charge: ${min} by {minName}");
             Console.WriteLine($"Highest charge: ${max} by {maxName}");
